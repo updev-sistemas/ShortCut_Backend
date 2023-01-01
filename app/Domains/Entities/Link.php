@@ -19,6 +19,7 @@ class Link extends Model
         'store_id',
         'slug',
         'url',
+        'link_hash',
         'expires_at'
     ];
 

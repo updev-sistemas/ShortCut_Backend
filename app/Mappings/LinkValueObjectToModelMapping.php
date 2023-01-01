@@ -26,6 +26,7 @@ class LinkValueObjectToModelMapping
                 $destination->category_id = $source->category_id ?? null;
                 $destination->slug = $source->slug ?? null;
                 $destination->url = $source->url ?? null;
+                $destination->link_hash = md5($source->url);
                 $destination->created_at = $source->created_at ?? Carbon::now();
                 $destination->updated_at = $source->updated_at ?? Carbon::now();
                 $destination->deleted_at = $source->deleted_at ?? null;

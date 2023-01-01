@@ -8,7 +8,7 @@ use App\Domains\ValueObjects\LinkValueObject;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class LinkCreateRequest extends FormRequest implements IRequestTransform
+class LinkApiCreateRequest extends FormRequest implements IRequestTransform
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +17,7 @@ class LinkCreateRequest extends FormRequest implements IRequestTransform
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
     }
 
     /**

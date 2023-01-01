@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('guest')->post('/user', function (Request $request) {
+    return response(['data' => 'ok'],200);
 });
+
+Route::middleware('guest')->post('/register/n/e/link', 'Api\LinkController@store');
