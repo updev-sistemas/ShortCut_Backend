@@ -12,6 +12,7 @@ use App\Domains\Contracts\ValueObjects\IValueObject;
  * @property int category_id
  * @property int store_id
  * @property string slug
+ * @property string hash
  * @property string url
  * @property string shortcut
  * @property string category_name

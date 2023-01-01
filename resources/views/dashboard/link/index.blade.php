@@ -20,36 +20,30 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link Curto</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Categoria</th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Loja</th>
-                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ação</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($collection->sortBy('name') as $key => $target)
                                         <tr>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    <a href="#" class="btn-copy-shortcut" data-shortcut="{{ $target->shortcut }}"><span class="material-icons opacity-10 material-symbols-outlined">content_copy</span></a>
+                                                    {{ $target->shortcut }}
+                                                </p>
+                                            </td>
                                             <td><p class="text-xs font-weight-bold mb-0">{{ $target->url ?? '' }}</p></td>
-                                            <td><p class="text-xs font-weight-bold mb-0">{{ $target->shortcut ?? '' }}</p></td>
                                             <td><p class="text-xs font-weight-bold mb-0">{{ $target->category_name ?? '' }}</p></td>
                                             <td><p class="text-xs font-weight-bold mb-0">{{ $target->store_name ?? '' }}</p></td>
-                                            <td>
-                                                <form id="frm-delete-{{ $target->id }}" action="{{ route('link.destroy',['id' => encrypt($target->id)]) }}" method="post">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        <a href="{{ route('link.edit',['id' => encrypt($target->id)]) }}" class="text-secondary font-weight-bold text-xs">Editar</a>
-                                                        <a data-target="#frm-delete-{{ $target->id }}" href="#" class="btn-delete text-secondary font-weight-bold text-xs">Excluir</a>
-                                                    </p>
-                                                </form>
-                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="6">{!! $collection->links() !!}</td>
+                                            <td colspan="4">{!! $collection->links() !!}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -73,6 +67,11 @@
                 {
                     $(target).submit();
                 }
+            });
+
+            $('.btn-copy-shortcut').click(function(){
+                let shortcut = $(this).data('shortcut');
+                navigator.clipboard.writeText(shortcut);
             });
         });
     </script>

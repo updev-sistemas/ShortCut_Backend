@@ -15,4 +15,3 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth']], function(){
 
 Route::get('/home', 'Dashboard\DashboardController@home')->name('home');
 Route::get('/', 'Dashboard\DashboardController@home');
-

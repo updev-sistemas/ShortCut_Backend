@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Domains\Contracts\Repositories\IDbContext;
 use App\Http\Requests\Link\LinkCreateRequest;
+use App\Http\Requests\Link\LinkShowRequest;
 use App\Http\Requests\Link\LinkUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -51,12 +52,24 @@ class LinkController extends Controller
         {
             $target = $request->transform();
 
+            $exists = $this->db->link()->existsByHash($target->url);
+            if ($exists != null)
+            {
+                $this->flashWarning('Link já estava registrado em nossa base de dados..');
 
-            $this->db->link()->save($target);
+                return redirect()->route('link.show',['id' => 0, 'slug' => $exists->slug]);
+            }
+            else
+            {
+                $slug = $this->db->link()->generate_slug();
+                $target->slug = $slug;
 
-            $this->flashSuccess('Link registrado.');
+                $this->db->link()->save($target);
 
-            return redirect()->route('link.create');
+                $this->flashSuccess('Link registrado.');
+
+                return redirect()->route('link.show', ['id' => 0, 'slug' => $slug]);
+            }
         }
         catch (\Exception $ex)
         {
@@ -72,9 +85,11 @@ class LinkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, LinkShowRequest $request)
     {
-        $target = $this->db->link()->find($id);
+        $slug = $request->get('slug',null);
+        $target = $this->db->link()->findByIdOrSlug($id,$slug);
+
         if ($target == null)
         {
             $this->flashWarning('Não foi possível localizar o link solicitado');
